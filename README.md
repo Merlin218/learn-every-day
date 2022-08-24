@@ -18,5 +18,5 @@
 - 掘金热榜
 - ...
 
-- [Day1 学会10+个JavaScript%20单行代码，让你的代码更优雅](docs/学会10+个JavaScript%20单行代码，让你的代码更优雅.md)
+- [Day1 学会10+个JavaScript单行代码，让你的代码更优雅](docs/学会10+个JavaScript%20单行代码，让你的代码更优雅.md)
 
