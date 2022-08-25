@@ -4,6 +4,12 @@ day: 1
 link: https://mp.weixin.qq.com/s/ST4we1SBCjP_W-LT-k0Jag
 ---
 
+# Day {{ $frontmatter.day }} 
+
+# {{ $frontmatter.title }}
+
+> 原文链接: <a :href=$frontmatter.link>{{ $frontmatter.title }}</a>
+
 ## 数组去重
 
 通过原生Set进行数据处理，再转化为数组。
