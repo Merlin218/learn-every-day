@@ -11,6 +11,7 @@
 - [Day2 详聊前端异常原理](详聊前端异常原理.md)
 - [Day3 初探 Vue3 编译之美](初探Vue3编译之美.md)
 - [Day4 Docker是怎么实现的?前端怎么用Docker做部署?](Docker是怎么实现的?前端怎么用Docker做部署?.md)
+- [DAY5 规范升级 NPM 包](规范升级 NPM 包.md)
 
 ## 内容来源
 - 公众号
