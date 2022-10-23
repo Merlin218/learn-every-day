@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Home</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width" />
+</head>
+
+<body>
+  <div>Learn Event Loop</div>
+  <script>
+    Promise.resolve().then(() => {
+      console.log('promise resolve')
+    })
+    function inSetYTimeout() {
+      console.log('in setTimeout')
+    }
+    setTimeout(function setTimeoutFunc1() {
+      new Promise(function PromiseResolveFunc(resolve) {
+        console.log('111');
+        resolve('222');
+      }).then(function promiseThenFunc(res) {
+        console.log(res);
+        setTimeout(function setTimeoutFunc2() {
+          console.log('333');
+        });
+      });
+      inSetYTimeout();
+    });
+
+    function animationFrameFunction() {
+      document.body.style.background = `rgba(${Math.random() * 255},${Math.random() * 255
+        },${Math.random() * 255},.1)`;
+    }
+    function idleCallbackFunc() {
+      console.log('requestIdleCallback')
+    }
+    setInterval(function intervalFunc() {
+      window.requestAnimationFrame(animationFrameFunction);
+      window.requestIdleCallback(idleCallbackFunc)
+    }, 50)
+    window.addEventListener('load', () => {
+      console.log('load')
+    })
+  </script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js" defer></script>
+  <script src="./async1.js" async></script>
+  <script src="./async2.js" async></script>
+  <script src="./defer1.js" defer></script>
+  <script src="./defer2.js" defer></script>
+  <image src="./20220516083713.png" mode="scaleToFill" />
+</body>
+
+</html>
