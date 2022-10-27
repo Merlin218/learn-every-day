@@ -1,22 +1,27 @@
 ---
 title: 会用 Performance 工具，就能深入理解 Event Loop
-day: 
+day: 6
 link: https://mp.weixin.qq.com/s/22tS74K5JQr1V98Q4DPqJg
 ---
 
 <CommonTitle></CommonTitle>
+> 参考文章
+> [会用 Performance 工具，就能深入理解 Event Loop](https://mp.weixin.qq.com/s/22tS74K5JQr1V98Q4DPqJg)
 
 通过学习神光大大的文章，我动手实践了一下，来重新认识一下页面渲染的流程是怎么样的？
 
+> 由于文章在编写时，可能修改样例代码导致截图与实际执行结果不同步，建议大家自行调试加深理解。
+
 我们先在`Performance`面板，重新捕捉一下页面的渲染执行情况，点击此按钮
 
-![](https://cdn.jsdelivr.net/gh/Merlin218/image-storage/picGo/202210231633798.png)
+![image.png](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/853132e3e0864a069f57c673a2d9e7ce~tplv-k3u1fbpfcp-watermark.image?)
 
 大概1s时间即可。
 
 我们看到，最开始是先创建一个请求，获取`index.html`文件
 
-![](https://cdn.jsdelivr.net/gh/Merlin218/image-storage/picGo/202210231635188.png)
+
+![image.png](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/033c94cd2f754ddebd96cba587a2bce0~tplv-k3u1fbpfcp-watermark.image?)
 
 当获取到文件之后，获取data中的数据，接下来开始解析`HTML`中的内容。以下为`index.html`文件的源代码。
 
@@ -65,8 +70,7 @@ link: https://mp.weixin.qq.com/s/22tS74K5JQr1V98Q4DPqJg
 </html>
 ```
 
-![](https://cdn.jsdelivr.net/gh/Merlin218/image-storage/picGo/202210231642655.png)
-
+![image.png](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/8a119ec095e2467da13aa322b2be98c3~tplv-k3u1fbpfcp-watermark.image?)
 我们可以看到，在这个过程中，发送了两次请求，分别对应 `async` 方式请求`async.js`  和 `defer`方式请求`defer.js`。加载这两个文件都不会阻塞渲染，接下来会继续解析并执行`script`标签中的内容。
 
 `js`代码的执行分为两个部分：`Compile Script`编译和最终执行。
@@ -82,11 +86,13 @@ link: https://mp.weixin.qq.com/s/22tS74K5JQr1V98Q4DPqJg
 
 接着执行微任务，请求图片资源。
 
-![](https://cdn.jsdelivr.net/gh/Merlin218/image-storage/picGo/202210231803891.png)
+
+![image.png](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/dce857a1f0ca4fbe92ffc1daaaee0ebf~tplv-k3u1fbpfcp-watermark.image?)
 
 接着会重新计算样式，进行布局，然后预绘制，绘制，合成图层等。此时以及可以看到界面中的内容。
 
-![](https://cdn.jsdelivr.net/gh/Merlin218/image-storage/picGo/202210231804541.png)
+
+![image.png](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a0c32dbbca7e4331a0bfc255a8c86136~tplv-k3u1fbpfcp-watermark.image?)
 
 
 完成之后，会等待`defer`的脚本全部**按顺序**加载并执行完成，知道脚本执行完之后，才会触发`DOMContentLoaded`事件，标记着dom内容加载完毕。
@@ -155,35 +161,42 @@ link: https://mp.weixin.qq.com/s/22tS74K5JQr1V98Q4DPqJg
 
 例如我们通过CDN链接，使用`defer`的方式加载`vue`框架的源码。
 
-![](https://cdn.jsdelivr.net/gh/Merlin218/image-storage/picGo/202210231740114.png)
+
+![image.png](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/35c7f6917e9e48a7a6ab198191663aca~tplv-k3u1fbpfcp-watermark.image?)
 
 `DOMContentLoaded`的事件是在vue的`script`文件加载执行完之后的。
 
-![](https://cdn.jsdelivr.net/gh/Merlin218/image-storage/picGo/202210231741769.png)
+
+![image.png](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1477887b74284a4c99c35b4311a99221~tplv-k3u1fbpfcp-watermark.image?)
 
 而如果是使用`async`的方式的话，当vue加载执行完时，`DOMContentLoaded`事件早已触发。
 
-![](https://cdn.jsdelivr.net/gh/Merlin218/image-storage/picGo/202210231743195.png)
 
-![](https://cdn.jsdelivr.net/gh/Merlin218/image-storage/picGo/202210231744547.png)
+![image.png](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/2a5d19c1e62749d6801cf60ddaf5a304~tplv-k3u1fbpfcp-watermark.image?)
+
+
+![image.png](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d3a6bac98950471aa369c2b8aa4a61eb~tplv-k3u1fbpfcp-watermark.image?)
 
 文档加载完成之后呢，当图片资源接受到时，会重新进行视图的绘制。
 
-![](https://cdn.jsdelivr.net/gh/Merlin218/image-storage/picGo/202210231808267.png)
+
+![image.png](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/efb3b36d07e34017999943c911834fee~tplv-k3u1fbpfcp-watermark.image?)
 
 当资源全部加载完后，会触发`load`事件，标识着整个页面及所有依赖资源如样式表和图片都已完成加载。
 
-![](https://cdn.jsdelivr.net/gh/Merlin218/image-storage/picGo/202210231902132.png)
+
+![image.png](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1015d9a9c14348699792e86d07bc9d59~tplv-k3u1fbpfcp-watermark.image?)
 
 对于后续的事件循环，宏任务微任务相关api，下面逐个来分析。
 
-- `requestAnimationFrame`
+- requestAnimationFrame
 
 属于宏任务，每16.7ms会执行一次，要求浏览器在下次重绘之前调用指定的回调函数更新动画。该方法需要传入一个回调函数作为参数，该回调函数会在浏览器下一次重绘之前执行。
 
 > 此处通过setInterval来控制50ms注册一次requestAnimationFrame，递归调用则是16.7ms执行一次
 
-![](https://cdn.jsdelivr.net/gh/Merlin218/image-storage/picGo/202210231923875.png)
+
+![image.png](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/17ee5a3ade2c4b9e9b1f611ad9249131~tplv-k3u1fbpfcp-watermark.image?)
 
 当回调函数执行之后，会发现还有很多空闲的时间，那么我们可以再这些时间来让浏览器处理一下事情。
 
@@ -194,7 +207,8 @@ link: https://mp.weixin.qq.com/s/22tS74K5JQr1V98Q4DPqJg
 -   callback 回调，浏览器空余时间执行回调函数。
 -   timeout 超时时间。如果浏览器长时间没有空闲，那么回调就不会执行，为了解决这个问题，可以通过 requestIdleCallback 的第二个参数指定一个超时时间。
 
-![](https://cdn.jsdelivr.net/gh/Merlin218/image-storage/picGo/202210231917751.png)
+
+![image.png](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/cbd91fd959a84ec2ac15604446714405~tplv-k3u1fbpfcp-watermark.image?)
 
 在react中则是使用了这个原理来进行控制React的更新。
 
@@ -202,7 +216,8 @@ link: https://mp.weixin.qq.com/s/22tS74K5JQr1V98Q4DPqJg
 
 属于宏任务，在定时器到期后执行一个函数或指定的一段代码。
 
-![](https://cdn.jsdelivr.net/gh/Merlin218/image-storage/picGo/202210231927976.png)
+
+![image.png](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a5eb798162934a458359b66b48b0a7d4~tplv-k3u1fbpfcp-watermark.image?)
 
 - promise
 
@@ -212,7 +227,8 @@ link: https://mp.weixin.qq.com/s/22tS74K5JQr1V98Q4DPqJg
 
 如下图，是先注册定时器（即执行同步代码），再`run microtasks`。
 
-![](https://cdn.jsdelivr.net/gh/Merlin218/image-storage/picGo/202210231938440.png)
+
+![image.png](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9f82f0db0e5c4e25b77e31e3f0228da8~tplv-k3u1fbpfcp-watermark.image?)
 
 - setInterval(cb, delay, arg1, ...)
 
@@ -229,8 +245,3 @@ link: https://mp.weixin.qq.com/s/22tS74K5JQr1V98Q4DPqJg
 -   rAF 回调和 reflow、repaint 还有渲染构成一个宏任务，每 16.7 ms 执行一次。
 -   rAF 回调、rIC 回调、GC、html 中的 script 等都是宏任务
 -   在任务执行完后，浏览器会执行所有微任务，也就是 runAllMicroTasks 部分。
-
-由于文章在编写时，可能修改样例代码，导致截图与文字不同步，建议大家自行调试加深理解。
-
-> 参考文章
-> [会用 Performance 工具，就能深入理解 Event Loop](https://mp.weixin.qq.com/s/22tS74K5JQr1V98Q4DPqJg)

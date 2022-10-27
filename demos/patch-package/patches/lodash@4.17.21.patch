@@ -1,0 +1,22 @@
+diff --git a/_arraySample.js b/_arraySample.js
+deleted file mode 100644
+index fcab0105e8e66c0ab96b55f1d97203352f4287df..0000000000000000000000000000000000000000
+diff --git a/consoleLog111.js b/consoleLog111.js
+new file mode 100644
+index 0000000000000000000000000000000000000000..523185b785647715c3ee4a4cd26294334bc63fe9
+--- /dev/null
++++ b/consoleLog111.js
+@@ -0,0 +1 @@
++console.log(111)
+diff --git a/lodash.js b/lodash.js
+index 4131e936cd1e0521ac7be3a9d4bfb9f1fdb35462..71d6d9caf76a6b408ab2276d20031339a44955b0 100644
+--- a/lodash.js
++++ b/lodash.js
+@@ -16287,6 +16287,7 @@
+      * // => 10
+      */
+     var add = createMathOperation(function(augend, addend) {
++      console.log('patched')
+       return augend + addend;
+     }, 0);
+ 
