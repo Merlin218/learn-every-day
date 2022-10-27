@@ -20,4 +20,4 @@
 
 ## 学习记录
 
-参考 [提交记录📝 ](https://github.com/learn-xxx/learn-every-day/commits/master) 或 [网站首页]()
+参考 [提交记录📝 ](https://github.com/learn-xxx/learn-every-day/commits/master) 或 [网站首页](https://github.com/learn-xxx/learn-every-day/blob/master/docs/index.md)
